@@ -1,0 +1,144 @@
+TITLE:
+Walter Behaylo
+Section B (10am)
+UNO
+
+PROBLEM DESCRIPTION:
+The problem I identified and solved was that me and my friends wanted to play UNO, but none of us have cards 
+and we don't want to spend the money on them. The program begins by creating a file containing cards, and then reads that file into a deck of cards. 
+The game begins by giving the basic instructions of UNO. After that, the user inputs the number of players, 
+and each player gets to enter their username when their player objects are created. Then, program runs a typical game of UNO, 
+iterating through the players and prompting them to select which cards to play. If they can play a card, their hand shrinks, 
+until one of them has played all their cards. At this point, that player will have won the game, and the program finishes.
+
+PROGRAM DOCUMENTATION:
+To run this program, the user needs to either play with a group of friends or control multiple players, because UNO doesn't have a single player version.
+The program doesn't use any extravagant libraries, mostly using just what is inherent to c++ 11. My final project varied greatly from my proposal,
+because my proposal hinged on using a data set of trials in colorado that I wasn't able to get access to. I did clear this with Dr. Paone though, 
+and he said that this project still fulfills the requirements. As far as expanding my program goes, there are two main areas I would think of expanding it.
+One such area would be the introduction of a computer player to the game. I think that this would be entirely possible, and would just require some type of
+distinguished like a boolean in the player class. To actually run the program, the AI would have to consider its' hand against the top cards, 
+similarly to how the checkCanPlay function in the card class does, and then choose which card it wanted to play. This could be really fun I think,
+and the AI could even consider the probability of certain cards being drawn, and strategize the order it plays its cards based on the cards other players play. 
+Another way I would consider expanding this program would be to give it a graphic user interface rather than being entirely textual. 
+I think that the cards could be implemented as SFML classes, similar to the triangle classes from A6, and then the SFML draw loop could search for 
+user clicking events when they tried to select their cards to determine which card they wanted to play.
+
+LIST DATA STRUCTURE:
+I used a lot of data structures in this project, but the main ones were a circularly linked list of the players, as each was essentially a node
+since they stored values and pointers to the players before and after them. I chose this method because it made the most sense in terms of
+iterating through the list, switching directions, and having continuation between the last and fires nodes(players). I also used dynamically
+allocated arrays for the decks, because I knew that they would all be changing a lot during runtime and I wanted to avoid any memory leaks that
+might happen. All of the classes which had decks as data members, which included both players (for their hands) and the actual game
+(for the deck and discard pile) used these dynamically allocated arrays, as all of their arrays changed sizes, which is why I chose this
+type of data structure for the decks.
+
+TESTS:
+Many of my tests came in with user input, and since my program is random I included an option to seed the random function so that the grader could run the specific following test cases.
+Admittedly I am a bit confused on how the TESTS section is explained, but for brevity I am just going to run through an implimentation of the program. Any lines
+that begin with //are my comments, explaining how that just happened or is about to happen is an example of my program handling 
+edge cases, user misinputs, and other program breakers smoothly. Any words between two stars, such as this: *example* are user input to the program.
+
+//for this running of test cases, the seed to use is the value 1
+
+Welcome to UNO!
+The rules of UNO are quite simple. You are always able to play a card if it is a wild card,
+otherwise it must match the color or symbol of the top card.
+If you can't play a card, you can choose to draw one instead.
+The goal of the game is to be the first person to play all of your cards!
+
+//the first example of a test case was actually with verifying user input to seed the random function or not.
+// the user needs to input an integer of value either 1 or 2, otherwise the program won't proceed
+
+Would you like to seed ths program? Enter 1 for yes, 2 for no: *3*
+
+Enter either 1 or 2
+Would you like to seed this prorgam? Enter 1 for yes, 2 for no: *a*
+
+Enter either 1 or 2
+Would you like to seed this program? Enter 1 for yes, 2 for no: *1*
+
+//once the user has entered their decision, the seed value requires the user to enter a positive integer
+Enter the seed value now: a
+Enter the seed value now: 1
+
+//after this, another input handling occurs with the user's number of entered players.
+// to play uno, there must be at least two people present. The program will not continue unless the user enters an integer >=2
+
+Enter how many people will be playing UNO today: *a*
+You're gonna need more people than that unfortunately, go get some friends to play!
+
+Enter how many people will be playing UNO today: *1*
+You're gonna need more people than that unfortunately, go get some friends to play!
+
+Enter how many people will be playing UNO today: *3*
+//similar to in most social media and username services, here only strings without spaces were allowed. I did this by only taking in the
+//username up until the first space
+Player 1, please enter your desired username: *W*
+Player 2, please enter your desired username: *321Blastoff!*
+Player 3, please enter your desired username: *!Loser*
+
+W, it's your turn.
+W, your cards in order are as follows:
+    1: Green 9
+    2: Green 4
+    3: Red 6
+    4: Green 9
+    5: Yellow 1
+    6: Yellow 8
+    7: Red 7
+The top card right now is a Blue 6
+Do you have a card to play? (enter yes/no)
+
+//player card selection and turns are the majority of the game, and so I put in a fair amount of misinput handling here. 
+//with the first question, I handled potential issues with capitalization by capitalizing the entire input string before comparing it to "YES"
+//if the input was then not yes, the game proceeded to have the player draw a card
+//if the input was yes, then the user had to input a number within the range of 1-handsize, as well as select a card that was viable to be played
+
+*yEs*
+Enter the number of the card you would like to play: *0*
+That card doesn't exist... enter a different number card
+*-8* 
+That card doesn't exist... enter a different number card
+*8* 
+That card doesn't exist... enter a different number card
+*2*
+Whoops! You can't play a Green 4
+//at the point of the user trying to play a card they can't, the program goes back and makes sure that they have a card to play,
+//otherwise they are given the option to draw against
+
+Do you have a card to play? (enter yes/no)
+*yes*
+Enter the number of the card you would like to play: *3*
+
+//at this point the user has input a valid card, because both Red 6 and Blue 6 have the value of 6, and so the program continues
+321Blastoff!, it's your turn.
+321Blastoff!, your cards in order are as follows:
+    1: Blue Skip
+    2: Yellow +2
+    3: Blue 4
+    4: Yellow 1
+    5: Blue 9
+    6: Red 3
+    7: Wild +4
+The top card right now is a Red 6
+Do you have a card to play? (enter yes/no)
+
+//this is where I will conclude my 5 examples of tests, because these are all the areas where user input is required and otherwise my program 
+//doesn't struggle with test cases. One example that isn't included here is if the deck runs out of cards. This is an issue that I experienced,
+//and to resolve it I made it so that when the deck runs out of cards, the discard pile becomes the deck. 
+
+
+
+
+REFLECTIONS:
+A big thing I learned from this project is about how useful it is to apply object oriented programming. Initially my program was exceptionally long, when
+various functions had to compose of multiple scope resolution, member access, and arrow operators.
+One example of this is with changing which players' turn it was at the end of the turn. Initially I had a big set of ifstatements set up
+and for loops for making players draw. Long story short, it was a mess. But by implimenting the switchCurrentPlayer function and the draw function,
+I did a better job with the single responsibility principle in my code, and did better at coding to a class rather than the implimentation, 
+as object oriented programming reccomends. If I had to do another project, I would definitely try to check if my proposal would work earlier on
+I was pretty frantic towards the end of the project, and didn't really make it as clean and efficient as I would've liked 
+because i only realized around halfway through my other project that I wasn't going to be able to access the data that the entire project relied upon. 
+I would've also liked to have started earlier, because I think it would have been very possible to extend my program with graphics and
+AI players as I mentioned in the program documentation area of the Project Paper.

@@ -1,0 +1,6 @@
+Lecture 25: 
+Constant Functions and templated Classes
+
+Idea of Constants: 
+We want the value in the functions to not change at any level, so we put in const so that if we try to change it the compiler will warn us
+
